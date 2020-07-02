@@ -1,0 +1,96 @@
+
+// contact {
+// 	form {
+// 		width: 100%;
+// 		max-width: 62%;
+// 		margin: 0 auto;
+// 		opacity: 0;
+// 		transition: 0.3s;
+// 		&.show-contact {
+// 			opacity: 1;
+// 		}
+// 		label,button {
+// 			position: absolute;
+// 		}
+// 		label {
+// 			span {
+// 				display: block;
+// 				line-height: 26px;
+// 				color: #fff;
+// 			}
+// 			input,textarea {
+// 				padding: 0 7px;
+// 				border: none;
+// 				background-color: transparent;
+// 				color: #fff;
+// 				font-family: arial;
+// 				&:focus {
+// 					outline: none;
+// 				}
+// 			}
+// 			input {
+// 				font-size: 32px;
+// 			}
+// 			textarea {
+// 				font-size: 18px;
+// 				resize: none;
+// 			}
+// 		}
+// 		button {
+// 			right: 0;
+// 			border: none;
+// 			background-color: transparent;
+// 			line-height: 26px;
+// 			color: #fff;
+// 			font-size: 18px;
+// 			cursor: pointer;
+// 			&:hover {
+// 				background-color: #fff;
+// 				color: #444;
+// 				transition: 0.3s;
+// 			}
+// 		}
+// 	}
+// 	svg {
+// 		position: absolute;
+// 		top: 0;
+// 		left: 0;
+// 		width: 100%;
+// 		height: 100%;
+// 		polygon {
+// 			opacity: 0;
+// 			transition: 0.3s;
+// 			&.show-contact {
+// 				opacity: 1;
+// 			}
+// 		}
+// 	}
+// 	ul {
+// 		list-style: none;
+// 		margin: 0;
+// 		padding: 0;
+// 		li {
+// 			display: inline-block;
+// 			padding-right: 14px;
+// 		}
+// 	}
+// }
+
+form.contact {
+	input, textarea {
+		padding: 7px;
+		background-color: transparent;
+		border: none;
+		transition: 0.3s;
+
+		&:focus {
+			outline: none;
+			border-left: 3px solid #444;
+			border-top: 3px solid #444;
+		}
+	}
+
+	textarea {
+		font-family: arial;
+	}
+}

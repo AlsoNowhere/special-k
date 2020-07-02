@@ -1,0 +1,64 @@
+
+.block {
+	display: block;
+}
+
+.middle {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.absolute {
+	position: absolute;
+
+	&.pinned.top.right {
+		top: 0;
+		right: 0;
+	}
+
+	&.pinned-all {
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+}
+
+.relative {
+	position: relative;
+}
+
+.z-index {
+	z-index: 1;
+}
+
+.width-full {
+	width: 100%;
+}
+
+.height-full {
+	height: 100%;
+}
+
+.hid {
+	opacity: 0;
+}
+
+.show {
+	animation: 1s linear fade-in forwards;
+}
+.hide {
+	animation: 1s fade-out forwards;
+}
+
+ul.reset-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.snow-text {
+	color: #fff;
+}
