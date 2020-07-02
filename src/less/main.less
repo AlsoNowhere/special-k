@@ -1,0 +1,47 @@
+
+* {
+	box-sizing: border-box;
+}
+
+html,body,main {
+	width: 100vw;
+	height: 100vh;
+}
+
+body {
+	position: relative;
+	width: 100%;
+	margin: 0;
+	background-color: @bg;
+	font-family: arial;
+	font-size: 18px;
+	overflow-x: hidden;
+}
+
+main {
+	overflow: hidden;
+
+	// router-outlet > div {
+	// 	overflow-y: auto;
+	// }
+}
+
+showcase,about,portfolio,contact {
+	svg {
+		width: 100vw;
+		height: 100vh;
+		// line {
+		// 	stroke-width: 5px;
+		// }
+	}
+}
+
+svg.draw-box {
+	.absolute;
+	top: 0;
+	left: 0;
+	// width: 100vw;
+	// height: 100vh;
+	.width-full;
+	.height-full;
+}
