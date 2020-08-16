@@ -1,8 +1,7 @@
+
 import { siteStore } from "../stores/site.store";
 
-// const rate = 1000/200;
-const rate = 1000/25;
-// const rate = 1000/2;
+import { rate } from "../data/draw-box.data";
 
 export const drawLines = (scope, lines, percent, limit, onFinish) => {
 

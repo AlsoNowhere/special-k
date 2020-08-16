@@ -7,15 +7,20 @@ import { drawBoxStore } from "../../stores/draw-box.store";
 
 import { generateRandomNumber, getRGBA } from "../../services/generate-stuff.service";
 import { drawLines } from "../../services/draw-lines.service";
+import { whichEverIsGreater, whichEverIsLess } from "../../services/whichever-is.service";
 
 import { Line } from "../../models/Line.model";
 import { Polygon } from "../../models/Polygon.model";
 
 import { strokeWidth } from "../../data/draw-box.data";
 import { siteStore } from "../../stores/site.store";
+import { headerOffsetPercent } from "../../data/constants.data";
+import { redirect } from "../../services/redirect.service";
 
-const varience = 20;
-const generateNewVarience = () => Math.floor(Math.random()*varience*2)-varience;
+/* This determines how much the lines could be offset by. A varience of 0 will make straight lines. */
+let varience = 20;
+const generateNewVarience = () => Math.floor(Math.random() * varience * 2) - varience;
+/* This determines how long the image stays on the screen before the lines start drawing out. Only applies if this prop for this is true. */
 const timeToPauseOnImage = 1000 * 1;
 
 export const DrawBox = function(){
@@ -24,10 +29,12 @@ export const DrawBox = function(){
 
         this.completedDrawing = false;
 
-        setTimeout(()=>{
+        setTimeout(() => {
             this.startLines();
-        },0);
+        }, 0);
     }
+
+    this.circles = [];
 
     this.startLines = function(){
 
@@ -37,13 +44,39 @@ export const DrawBox = function(){
         const width = this.svgelement.clientWidth;
         const height = this.svgelement.clientHeight;
 
-        const ratio = width / height;
-        const randomStart = Math.floor(Math.random() * (ratio > 1 ? width - height : height - width));
+/*
+    Find the total height of the header. We cannot draw lines in the header or above it, only below.
+    First we add the distance between the top of the screen and the header. This is a percentage of the height of the screen.
+    This variable is stored in 'constants' and can be changed by the Dev at any time.
+*/
+        const totalHeaderHeight = headerOffsetPercent * height / 100
+    /* We next add the extra height add to the height by being rotated slightly. This rotation is randomly generated once per page load.*/
+            + Math.tan(Math.abs(this.headerRotation) / RADIANS) * width
+    /* Now we add the height of the header*/
+            + this.header.clientHeight;
 
-        const firstWidth = ratio > 1 ? randomStart + height*0.2 : width*0.3;
-        const firstHeight = ratio > 1 ? height*0.2 : randomStart + width*0.3;
-        const lastWidth = ratio > 1 ? randomStart + height*0.9 : width*0.6;
-        const lastHeight = ratio > 1 ? height*0.9 : randomStart + width*0.6;
+        const availableHeight = height - totalHeaderHeight;
+        const availableSquare = width < availableHeight ? width : availableHeight;
+
+/* Here we can see which length has overspill (top or left). */
+        const isLandscape = width / availableHeight > 1;
+
+        const offsetStart = Math.floor(Math.random() * (
+            isLandscape ? width - availableHeight : availableHeight - width
+        ));
+
+/* This variable change allows us to set how big the angle can be for rotating the drawn in lines.
+The greater then line length and angle the more the resulting square will be cropped. */
+        varience = (isLandscape ? width : height) / 100;
+
+        const firstWidth = (isLandscape ? offsetStart : 0) + availableSquare * 0.1;
+        const firstHeight = totalHeaderHeight + (isLandscape ? 0 : offsetStart) + availableSquare * 0.1;
+        const lastWidth = firstWidth + availableSquare * 0.8;
+        const lastHeight = firstHeight + availableSquare * 0.8;
+
+
+
+
 
 /*
     Where the points are. See the const below.
@@ -121,6 +154,12 @@ export const DrawBox = function(){
             ),
         };
 
+        this.circles.length = 0;
+        this.circles.push({ x: intercepts.A.x + strokeWidth / 2, y: intercepts.A.y + strokeWidth / 2 });
+        this.circles.push({ x: intercepts.B.x - strokeWidth / 2, y: intercepts.B.y + strokeWidth / 2 });
+        this.circles.push({ x: intercepts.C.x - strokeWidth / 2, y: intercepts.C.y - strokeWidth / 2 });
+        this.circles.push({ x: intercepts.D.x + strokeWidth / 2, y: intercepts.D.y - strokeWidth / 2 });
+
         this.lines.length = 0;
 
         this.lines.push(
@@ -143,28 +182,21 @@ export const DrawBox = function(){
         this.lines[6].percent -= 20;
         this.lines[7].percent -= 30;
 
-        drawLines(this,this.lines,0,100,()=>{
+        drawLines(this, this.lines, 0, 100, () => {
 
-            const top = intercepts.A.y < intercepts.B.y ? intercepts.A.y : intercepts.B.y;
-            const left = intercepts.A.x < intercepts.D.x ? intercepts.A.x : intercepts.D.x;
-            const templateWidth = [
-                intercepts.B.x - intercepts.A.x,
-                intercepts.C.x - intercepts.D.x,
-                intercepts.D.y - intercepts.A.y,
-                intercepts.C.y - intercepts.B.y,
-            ].reduce((a,b)=>b>a?b:a,0);
-            const templateHeight = [
-                intercepts.D.y - intercepts.A.y,
-                intercepts.C.y - intercepts.B.y,
-            ].reduce((a,b)=>b<a?b:a,Infinity);
+            const top = whichEverIsLess(intercepts.A.y, intercepts.B.y);
+            const left = whichEverIsLess(intercepts.A.x, intercepts.D.x);
 
-            const strokeHalf = strokeWidth / 2 - 2;
+            const templateWidth = whichEverIsGreater(intercepts.B.x, intercepts.C.x) - left;
+            const templateHeight = whichEverIsGreater(intercepts.D.y, intercepts.C.y) - top;
+
+            // const strokeHalf = strokeWidth / 2 - 2;
 
             this.templateStyles = `
-                top:${top-strokeHalf}px;
-                left:${left-strokeHalf}px;
-                width:${templateWidth+strokeHalf}px;
-                height:${templateHeight}px;
+                top:${ top + strokeWidth /2 }px;
+                left:${ left + strokeWidth / 2 }px;
+                width:${ templateWidth - strokeWidth }px;
+                height:${ templateHeight - strokeWidth }px;
             `;
 
             this.polygonPoints = new Polygon(`
@@ -186,6 +218,11 @@ export const DrawBox = function(){
 
 // Finish drawing lines
             drawBoxStore.leftSideAngle = Math.atan((intercepts.D.x - intercepts.A.x) / (intercepts.D.y - intercepts.A.y)) * RADIANS;
+            drawBoxStore.rightSideAngle = Math.atan((intercepts.C.x - intercepts.B.x) / (intercepts.C.y - intercepts.B.y)) * RADIANS;
+            drawBoxStore.minimumWidth = whichEverIsLess(intercepts.B.x - intercepts.A.x, intercepts.C.x - intercepts.D.x)
+                - strokeWidth
+    // This is the width of the scroll bar on the right.
+                - 5;
             drawBoxStore.completed = true;
 
             dillx.change(this);
@@ -200,12 +237,13 @@ export const DrawBox = function(){
     this.retainImage = function(){
 
 // Show the image on the page for this long.
-        siteStore.timeouts.push(setTimeout(()=>{
+        siteStore.timeouts.push(setTimeout(() => {
 
 // Start the animation out of the image. Wait 1 second for image to be drawn out.
             this.contentClasses = "hide";
-            siteStore.timeouts.push(setTimeout(()=>{
+            siteStore.timeouts.push(setTimeout(() => {
 
+            /* Settings this makes the lines draw out at different times. */
                 this.lines[1].percent -= 10;
                 this.lines[2].percent -= 20;
                 this.lines[3].percent -= 30;
@@ -215,25 +253,30 @@ export const DrawBox = function(){
                 this.lines[7].percent -= 30;
 
 // Start to draw the lines out. Set the line from 100% to 200%.
-                drawLines(this,this.lines,100,200,()=>{
+                drawLines(this, this.lines, 100, 200, () => {
                     const time = Date.now();
 
 // Run the parents function after the image and lines have left.
-                    this.whenChange().then(() => {
+                    this.whenChange().then(result => {
+
+                    /* This conditional indicates whether to continue or not. */
+                        if (!result) {
+                            return;
+                        }
 
 // Either wait a second or for the next image to load, whichever is longer.
                         if (Date.now() - time > 1000) {
                             this.startLines();
                         }
                         else {
-                            siteStore.timeouts.push(setTimeout(()=>{
+                            siteStore.timeouts.push(setTimeout(() => {
                                 this.startLines();
-                            },Date.now()-time));
+                            }, Date.now() - time));
                         }
                     });
                 });
-            },1000));
-        },timeToPauseOnImage));
+            }, 1000));
+        }, timeToPauseOnImage));
     }
 
     this.clearTimeout = function(){
@@ -268,6 +311,7 @@ export const DrawBox = function(){
             <svg class="draw-box" svgelement---="">
                 <polygon points-="polygonPoints" style-="polygonStyles" dill-if={this.polygonPoints !== null} />
                 <line x1-="x1" y1-="y1" x2-="x2" y2-="y2" style-="lineStyles" dill-for="lines" />
+                {/* <circle cx-="x" cy-="y" r="3" fill="red" dill-for="circles" /> */}
             </svg>
         </>
     )

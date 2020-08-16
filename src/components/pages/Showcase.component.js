@@ -16,7 +16,7 @@ export const Showcase = function(){
 
     this.oninit = function(){
         if (redirect.path.length === 1) {
-            redirect.path = ["showcase","0"];
+            redirect.path = ["showcase", "0"];
         }
         this.whenChange(parseInt(redirect.path[1]));
     };
@@ -42,6 +42,7 @@ export const Showcase = function(){
     this.imageIndex = null;
     this.imgSource = null;
     this.drawOut = true;
+    this.containerelement = null;
 
     this.whenChange = function(index){
         if (index === undefined) {
@@ -55,11 +56,17 @@ export const Showcase = function(){
         }
         const url = `dist/images/showcase/${data.showcase[this.imageIndex]}`;
 
-        return new Promise(resolve=>{
+        return new Promise(resolve => {
+            if (redirect.path[0] !== "showcase") {
+                return resolve(false);
+            }
             loadImage(url).then(()=>{
-                redirect.path = ["showcase",this.imageIndex];
+                if (redirect.path[0] !== "showcase") {
+                    return resolve(false);
+                }
+                redirect.path = ["showcase", this.imageIndex];
                 this.imgSource = url;
-                resolve();
+                resolve(true);
                 dillx.change(this);
             });
         });
@@ -69,16 +76,21 @@ export const Showcase = function(){
         return this.imgSource !== null;
     }
 
+    this.imgClass = function(){
+        return this.containerelement.clientWidth > this.containerelement.clientHeight ? "width-full" : "height-full";
+    }
+
     this.imgTemplate = dillx(
-        <img src-="imgSource"
-            class="block absolute width-full"
-            dill-if="isImgSource" />
+        <div class="width-full height-full" containerelement---="">
+            <img src-="imgSource"
+                class="block absolute {imgClass}"
+                dill-if="isImgSource" />
+        </div>
     );
 
     return dillx(
         <div>
             <DrawBox template="imgTemplate" whenchange="whenChange" />
         </div>
-        // <span>test</span>
     )
 };

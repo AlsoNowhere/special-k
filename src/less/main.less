@@ -3,45 +3,43 @@
 	box-sizing: border-box;
 }
 
-html,body,main {
+html,
+body,
+main {
 	width: 100vw;
 	height: 100vh;
 }
 
 body {
-	position: relative;
-	width: 100%;
+	.relative;
+	.width-full;
 	margin: 0;
 	background-color: @bg;
 	font-family: arial;
 	font-size: 18px;
 	overflow-x: hidden;
+
+	&::-webkit-scrollbar {
+		width: 5px;
+		height: 5px;
+	}
+	&::-webkit-scrollbar-track {
+		background: #ABABAB;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: lightgrey;
+		border-radius: 2px;
+	}
 }
 
 main {
 	overflow: hidden;
-
-	// router-outlet > div {
-	// 	overflow-y: auto;
-	// }
-}
-
-showcase,about,portfolio,contact {
-	svg {
-		width: 100vw;
-		height: 100vh;
-		// line {
-		// 	stroke-width: 5px;
-		// }
-	}
 }
 
 svg.draw-box {
 	.absolute;
 	top: 0;
 	left: 0;
-	// width: 100vw;
-	// height: 100vh;
 	.width-full;
 	.height-full;
 }
