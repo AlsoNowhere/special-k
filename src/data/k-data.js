@@ -1,19 +1,41 @@
 
 export default {
+	target: "images",
 	showcase: [
-		"Lampv2.jpg",
-		"RoadMark-2-legal-versionv2.png",
-		"the_chairv2.png",
-		"the_ladybugv2.jpg"
+		"Also-Nowhere-Wood-Square.jpg",
+		"Concavo-Chair-Square.jpg",
+		"DJ-Square.png",
+		"Drain-Square.jpg",
+		"Footsteps-Square.png",
+		"Ladybug-Square.png",
+		"Ouroborode-1-Square.jpg",
+		"Ouroborode-Square.jpg",
+		"Puzzlemug-Square.jpg",
+		"RoadMark-1-Square.png",
+		"RoadMark-2-Square.png",
+		"RoadMark-3-Square.png",
+		"Turkey-Square.png",
+		"World-of-Fruit-Square.png",
 	],
 	portfolio: {
-		"Showcase": {
-			"main": "the_ladybugv2.jpg",
+		"showcase": {
+			"main": "Also-Nowhere-Wood-Square.jpg",
+			label: "Showcase",
 			"images": {
-				"Lampv2.jpg":"Lamp (version 2)",
-				"RoadMark-2-legal-versionv2.png":"RoadMark (version 2)",
-				"the_chairv2.png":"The Chair",
-				"the_ladybugv2.jpg":"The Ladybug (version 2)",
+				"Also-Nowhere-Wood-Square.jpg":"The Ladybug",
+				"Concavo-Chair-Square.jpg":"Concavo Chair",
+				"DJ-Square.png":"DJ",
+				"Drain-Square.jpg":"Drain",
+				"Footsteps-Square.png":"Footsteps",
+				"Ladybug-Square.png":"Ladybug",
+				"Ouroborode-1-Square.jpg":"Ouroborode 1",
+				"Ouroborode-Square.jpg":"Ouroborode",
+				"Puzzlemug-Square.jpg":"Puzzlemug",
+				"RoadMark-1-Square.png":"RoadMark 1",
+				"RoadMark-2-Square.png":"RoadMark 2",
+				"RoadMark-3-Square.png":"RoadMark 3",
+				"Turkey-Square.png":"Turkey",
+				"World-of-Fruit-Square.png":"World of Fruit",
 			}
 		},
 		"Lamps": {

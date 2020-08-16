@@ -1,0 +1,102 @@
+
+header {
+	position: fixed;
+	z-index: 1;
+	left: -5%;
+	width: 110%;
+
+	svg {
+		cursor: pointer;
+	}
+
+	h1 {
+		height: @headerHeight;
+		margin: 0;
+		line-height: @headerHeight;
+		color: #fff;
+		animation: 0.3s fade-in forwards;
+		cursor: pointer;
+		transition: 0.3s;
+	
+		a {
+			color: #fff;
+			text-decoration: none;
+		}
+
+		&:hover {
+			color: lightgrey;
+		}
+	}
+
+	ul {
+		list-style: none;
+		vertical-align: middle;
+		height: @headerHeight;
+		padding: 0;
+		animation: 0.3s fade-in forwards;
+
+		li {
+			display: inline-block;
+			vertical-align: middle;
+			height: @headerHeight;
+			margin: 0 15px 0 0;
+			padding: 0;
+
+			&:last-child {
+				margin: 0;
+			}
+
+			span {
+				display: block;
+				height: @headerHeight;
+				line-height: @headerHeight * 4/3;
+				cursor: pointer;
+				transition: 0.3s;
+
+				&:hover {
+					color: lightgrey;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:920px) {
+	header {
+		display: flex;
+		height: @headerHeight;
+
+		h1 {
+			display: inline-block;
+			padding-left: 15%;
+			margin-right: 5%;
+		}
+
+		ul {
+			display: inline-block;
+			margin: 0;
+		}
+	}
+}
+
+@media screen and (max-width:920px) {
+	header {
+		height: @headerHeight * 2;
+
+		h1 {
+			display: block;
+			text-align: center;
+		}
+
+		loading {
+			position: absolute;
+			top: 0;
+			right: 10%;
+		}
+
+		ul {
+			display: block;
+			margin: 0 auto;
+		}
+	}
+}

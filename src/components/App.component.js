@@ -29,12 +29,13 @@ export const App = function(){
         siteStore.context = this;
     }
 
+    this.header = null;
+    this.headerRotation = null;
     this.drawnHeader = false;
     this.showShowcase = () => redirect.path[0] === "showcase";
     this.showAbout = () => redirect.path[0] === "about";
     this.showPortfolio = () => redirect.path[0] === "portfolio";
     this.showContact = () => redirect.path[0] === "contact";
-    this.showReturnButtonOnHeader = false;
 
     return dillx(
         <>

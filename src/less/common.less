@@ -1,15 +1,14 @@
 
+// display
 .block {
 	display: block;
 }
 
-.middle {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+.inline-block {
+	display: inline-block;
 }
 
+// position
 .absolute {
 	position: absolute;
 
@@ -26,6 +25,13 @@
 	}
 }
 
+.middle {
+	.absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .relative {
 	position: relative;
 }
@@ -34,6 +40,7 @@
 	z-index: 1;
 }
 
+// Dimensions
 .width-full {
 	width: 100%;
 }
@@ -42,23 +49,48 @@
 	height: 100%;
 }
 
-.hid {
-	opacity: 0;
+.padded-small {
+	padding: 0 7px;
 }
 
+// Animations
 .show {
 	animation: 1s linear fade-in forwards;
 }
+
 .hide {
 	animation: 1s fade-out forwards;
 }
 
-ul.reset-list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+.fade-in {
+	animation: 0.3s fade-in linear forwards;
+
+	&.fade-out {
+		animation: 1s fade-out linear forwards;
+	}
 }
 
+// Fonts
 .snow-text {
 	color: #fff;
+}
+
+.hid {
+	opacity: 0;
+}
+
+.scroll-styles {
+	&::-webkit-scrollbar {
+		width: 5px;
+		height: 5px;
+	}
+	
+	&::-webkit-scrollbar-track {
+		background: #ABABAB;
+	}
+	
+	&::-webkit-scrollbar-thumb {
+		background: lightgrey;
+		border-radius: 2px;
+	}
 }

@@ -1,5 +1,6 @@
 
 export default {
+	target: "test-images",
 	showcase: [
 		"two-80_01.jpg",
 		"two-80_02.png",
