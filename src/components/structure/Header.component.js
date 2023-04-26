@@ -106,17 +106,40 @@ export const Header = function(){
 
     this.back = () => headerStore.back();
 
+    this.strip = {
+        x1: "31.9346",
+        y1: "104.3906",
+        x2: "167.8252",
+        y2: "104.3906",
+    }
+
+    this.collapsey = "133.34,104.39 166.45,147.66 33.55,104.39 166.45,61.12"
+
     return dillx(
         <header header---="" style-="headerStyles">
-            <svg viewBox="0 0 16 16"
+            {/* <svg viewBox="0 0 16 16"
                 click--="back"
                 class="absolute z-index"
                 style-="headerIconStyles"
                 dill-if={headerStore.showReturnButtonOnHeader}>
                 <g class="fade-in">
                     <path d-="headerIconPath" stroke="#808080" fill="none" stroke-width="1px" />
-                </g>
+                </g> 
+            </svg>*/}
+
+            <svg viewBox="0 0 200 200"
+                click--="back"
+                class="absolute z-index"
+                style-="headerIconStyles"
+                dill-if={headerStore.showReturnButtonOnHeader}>
+
+                <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" dill-extend="strip" >
+                    <stop  offset="0" style="stop-color:#FFFFFF"/>
+                    <stop  offset="1" style="stop-color:#3F3F3F;stop-opacity:0.2"/>
+                </linearGradient>
+                <polygon fill="#FFFFFF" stroke="url(#SVGID_1_)" stroke-linecap="round" stroke-miterlimit="10" points-="collapsey"/>
             </svg>
+
 
             <h1 class="fade-in"
                 click--={headerStore.showReturnButtonOnHeader = false, redirect.path = ["showcase","0"]}
